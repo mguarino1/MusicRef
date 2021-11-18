@@ -90,7 +90,7 @@ function Content ({ note }: Content) {
     
     return (
         <div className='content'>
-            <h1 className='note'>{note}</h1>
+            <h1 className='note'>{note} help</h1>
                 <h2 className='majScale'> 
                     {noteLib[note].scale.map((n) => { return (
                         <p className='scaleNote' key={n}>{n}</p>
