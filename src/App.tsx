@@ -96,11 +96,6 @@ function Content ({ note }: Content) {
                         <p className='scaleNote' key={n}>{n}</p>
                     )})}
                 </h2>
-            <h2 className='majTriad'>
-                {noteLib[note].scale[0]}
-                {noteLib[note].scale[2]}
-                {noteLib[note].scale[4]}
-            </h2>
         </div>
     )
 }
