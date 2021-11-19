@@ -18,5 +18,6 @@ const selectorSlice = createSlice({
     }
 });
 
+
 export const { selected } = selectorSlice.actions;
 export default selectorSlice.reducer;

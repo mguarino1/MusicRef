@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import { selected } from './features/selector/selector-slice'
+import { toggled } from './features/selector/toggle-slice'
 import './App.css'
 
 function App() {
 
     const note = useAppSelector((state) => state.selector.value);  //Currently selected note
+    const toggle = useAppSelector((state) => state.toggle.value);
     const dispatch = useAppDispatch();
   
     function handleClick(e: string) {
         dispatch(selected(e))
+    }
+    function handleToggle() {
+        dispatch(toggled(toggle))
     }
 
     return (
@@ -28,7 +33,7 @@ function App() {
                 <Key className={'accidental'} note={'A# / Bb'} onClick={() => handleClick('A# / Bb')} key={'A# / Bb'}/>
                 <Key className={'natural'} note={'B'} onClick={() => handleClick('B')} key={'B'}/> 
             </div>
-            <Content note={note} />
+            <Content note={note} toggle={toggle} handleToggle={handleToggle}/>
         </div>
     )
 }
@@ -49,12 +54,15 @@ function Key ({ className, note, onClick }: Keys)  {
 
 interface Content {
     note: string;
+    toggle: boolean;
+    handleToggle: Function;
 }
 
-function Content ({ note }: Content) {
+function Content ({ note, toggle, handleToggle }: Content) {
+    
     
     interface NoteData {
-        scale: string[];
+        majScale: string[];
     }
 
     interface NoteName {
@@ -63,41 +71,58 @@ function Content ({ note }: Content) {
 
     const noteLib: NoteName = {
         'C': { 
-            'scale': ['C','D','E','F','G','A','B'] },
+            'majScale': ['C','D','E','F','G','A','B'] },
         'C# / Db': { 
-            'scale': ['Db','Eb','F','Gb','Ab','Bb','C'] },
+            'majScale': ['Db','Eb','F','Gb','Ab','Bb','C'] },
         'D': { 
-            'scale': ['D','E','F#','G','A','B','C#'] },
+            'majScale': ['D','E','F#','G','A','B','C#'] },
         'D# / Eb': { 
-            'scale': ['Eb','F','G','Ab','Bb','C','D'] },
+            'majScale': ['Eb','F','G','Ab','Bb','C','D'] },
         'E': { 
-            'scale': ['E','F#','G#','A','B','C#','D#'] },
+            'majScale': ['E','F#','G#','A','B','C#','D#'] },
         'F': { 
-            'scale': ['F','G','A','Bb','C','D','E'] },
+            'majScale': ['F','G','A','Bb','C','D','E'] },
         'F# / Gb': { 
-            'scale': ['Gb','Ab','Bb','Cb','Db','Eb','F'] },
+            'majScale': ['Gb','Ab','Bb','Cb','Db','Eb','F'] },
         'G': { 
-            'scale': ['G','A','B','C','D','E','F#'] },
+            'majScale': ['G','A','B','C','D','E','F#'] },
         'G# / Ab': { 
-            'scale': ['Ab','Bb','C','Db','Eb','F','G'] },
+            'majScale': ['Ab','Bb','C','Db','Eb','F','G'] },
         'A': { 
-            'scale': ['A','B','C#','D','E','F#','G#'] },
+            'majScale': ['A','B','C#','D','E','F#','G#'] },
         'A# / Bb': { 
-            'scale': ['Bb','C','D','Eb','F','G','A'] },
+            'majScale': ['Bb','C','D','Eb','F','G','A'] },
         'B': { 
-            'scale': ['B','C#','D#','E','F#','G#','A#'] },
+            'majScale': ['B','C#','D#','E','F#','G#','A#'] },
     }
     
     return (
         <div className='content'>
+            <ToggleButton toggle={toggle} onClick={() => handleToggle(toggle)}/>
             <h1 className='note'>{note}</h1>
                 <h2 className='majScale'> 
-                    {noteLib[note].scale.map((n) => { return (
+                    {noteLib[note].majScale.map((n) => { return (
                         <p className='scaleNote' key={n}>{n}</p>
                     )})}
                 </h2>
         </div>
     )
+}
+
+interface toggleButton {
+    toggle: boolean;
+    onClick: React.MouseEventHandler<HTMLDivElement>
+}
+
+function ToggleButton({ toggle, onClick }: toggleButton) {
+
+    return (
+        
+        <div className='toggleContainer'>
+            <div className={toggle == false ? 'toggleOn' : 'toggleOff'} onClick={onClick}></div>
+        </div>
+    )
+
 }
 
 export default App
