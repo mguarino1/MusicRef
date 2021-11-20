@@ -33,7 +33,7 @@ body {
   color: #313131;
 }
 
-.majScale {
+.scale {
   grid-column: 1 / 1;
   grid-row: 2 / 2;
   justify-self: center;
@@ -101,10 +101,18 @@ body {
   grid-column: 1 / 1;
   grid-row: 1 / 1;
   place-self: center;
+}
+
+.toggleContainer h3 {
+  opacity: .7;
+}
+
+.toggleSwitch {
   width: 50px;
   height: 25px;
   background-color: rgb(255, 255, 255);
   cursor: pointer;
+  inset: 5px;
 }
 
 .toggleOn {

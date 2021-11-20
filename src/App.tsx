@@ -63,6 +63,7 @@ function Content ({ note, toggle, handleToggle }: Content) {
     
     interface NoteData {
         majScale: string[];
+        minScale: string[];
     }
 
     interface NoteName {
@@ -71,39 +72,58 @@ function Content ({ note, toggle, handleToggle }: Content) {
 
     const noteLib: NoteName = {
         'C': { 
-            'majScale': ['C','D','E','F','G','A','B'] },
+            'majScale': ['C','D','E','F','G','A','B'],
+            'minScale': ['C','D','Eb','F','G','Ab','Bb'] },
         'C# / Db': { 
-            'majScale': ['Db','Eb','F','Gb','Ab','Bb','C'] },
+            'majScale': ['Db','Eb','F','Gb','Ab','Bb','C'],
+            'minScale': ['Db','Eb','E','Gb','Ab','A','B'] },
         'D': { 
-            'majScale': ['D','E','F#','G','A','B','C#'] },
+            'majScale': ['D','E','F#','G','A','B','C#'],
+            'minScale': ['D','E','F','G','A','Bb','C'] },
         'D# / Eb': { 
-            'majScale': ['Eb','F','G','Ab','Bb','C','D'] },
+            'majScale': ['Eb','F','G','Ab','Bb','C','D'],
+            'minScale': ['Eb','E','Gb','Ab','Bb','B','Db'] },
         'E': { 
-            'majScale': ['E','F#','G#','A','B','C#','D#'] },
+            'majScale': ['E','F#','G#','A','B','C#','D#'],
+            'minScale': ['E','F#','G','A','B','C','D'] },
         'F': { 
-            'majScale': ['F','G','A','Bb','C','D','E'] },
+            'majScale': ['F','G','A','Bb','C','D','E'],
+            'minScale': ['F','G','Ab','Bb','C','Db','Eb'] },
         'F# / Gb': { 
-            'majScale': ['Gb','Ab','Bb','Cb','Db','Eb','F'] },
+            'majScale': ['Gb','Ab','Bb','B','Db','Eb','F'],
+            'minScale': ['Gb','Ab','A','B','Db','D','E'] },
         'G': { 
-            'majScale': ['G','A','B','C','D','E','F#'] },
+            'majScale': ['G','A','B','C','D','E','F#'],
+            'minScale': ['G','A','Bb','C','D','Eb','F'] },
         'G# / Ab': { 
-            'majScale': ['Ab','Bb','C','Db','Eb','F','G'] },
+            'majScale': ['Ab','Bb','C','Db','Eb','F','G'],
+            'minScale': ['Ab','Bb','B','Db','Eb','E','Gb'] },
         'A': { 
-            'majScale': ['A','B','C#','D','E','F#','G#'] },
+            'majScale': ['A','B','C#','D','E','F#','G#'],
+            'minScale': ['A','B','C','D','E','F','G'] },
         'A# / Bb': { 
-            'majScale': ['Bb','C','D','Eb','F','G','A'] },
+            'majScale': ['Bb','C','D','Eb','F','G','A'],
+            'minScale': ['Bb','C','Db','Eb','F','Gb','Ab'] },
         'B': { 
-            'majScale': ['B','C#','D#','E','F#','G#','A#'] },
+            'majScale': ['B','C#','D#','E','F#','G#','A#'],
+            'minScale': ['B','C#','D','E','F#','G','A'] },
     }
     
     return (
         <div className='content'>
             <ToggleButton toggle={toggle} onClick={() => handleToggle(toggle)}/>
             <h1 className='note'>{note}</h1>
-                <h2 className='majScale'> 
-                    {noteLib[note].majScale.map((n) => { return (
-                        <p className='scaleNote' key={n}>{n}</p>
-                    )})}
+                <h2 className='scale'> 
+                    {
+                    toggle == false ?
+                        noteLib[note].majScale.map((n) => { return (
+                            <p className='scaleNote' key={n}>{n}</p>
+                        )})
+                        :
+                        noteLib[note].minScale.map((n) => { return (
+                            <p className='scaleNote' key={n}>{n}</p>
+                        )})
+                    } 
                 </h2>
         </div>
     )
@@ -116,10 +136,12 @@ interface toggleButton {
 
 function ToggleButton({ toggle, onClick }: toggleButton) {
 
-    return (
-        
+    return ( 
         <div className='toggleContainer'>
-            <div className={toggle == false ? 'toggleOn' : 'toggleOff'} onClick={onClick}></div>
+            <h3>{toggle == false ? 'Major' : 'Minor'}</h3>
+            <div className='toggleSwitch'>
+                <div className={toggle == false ? 'toggleOn' : 'toggleOff'} onClick={onClick}></div>
+            </div>
         </div>
     )
 
