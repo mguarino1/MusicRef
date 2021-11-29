@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import{ NoteData, NoteName, noteLib } from './globals'
+import{ noteLib } from './globals'
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import { selected } from './features/selector/selector-slice'
 import { toggled } from './features/toggler/toggle-slice'
@@ -87,7 +87,7 @@ function Content ({ note, toggle, handleToggle }: Content) {
 
 interface triadContainer {
     type: string,
-    note: string
+    note: string,
 }
 
 function TriadContainer({ type, note }: triadContainer) {
@@ -142,7 +142,17 @@ function TriadContainer({ type, note }: triadContainer) {
 
 }
 
+/* interface nextButton {
+    onClick: React.MouseEventHandler<HTMLButtonElement>
+}
 
+function NextButton({ onClick }: nextButton) {
+
+    return (
+        <button onClick={onClick}>{'>>'}</button>
+    )
+
+} */
 interface toggleButton {
     toggle: boolean;
     onClick: React.MouseEventHandler<HTMLDivElement>
