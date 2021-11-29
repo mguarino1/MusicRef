@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
+import{ NoteData, NoteName, noteLib } from './globals'
 import { useAppDispatch, useAppSelector } from './app/hooks'
 import { selected } from './features/selector/selector-slice'
-import { toggled } from './features/selector/toggle-slice'
+import { toggled } from './features/toggler/toggle-slice'
 import './App.css'
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
 
     return (
         <div className='display'>
-            <div className='keyboard'>
+            <div className='sidebar'>
                 <Key className={'natural'} note={'C'} onClick={() => handleClick('C')} key={'C'}/>
                 <Key className={'accidental'} note={'C# / Db'} onClick={() => handleClick('C# / Db')} key={'C# / Db'}/>
                 <Key className={'natural'} note={'D'} onClick={() => handleClick('D')} key={'D'}/>
@@ -37,7 +38,6 @@ function App() {
         </div>
     )
 }
-
 interface Keys {
     className: string;
     note: string;
@@ -59,61 +59,13 @@ interface Content {
 }
 
 function Content ({ note, toggle, handleToggle }: Content) {
-    
-    
-    interface NoteData {
-        majScale: string[];
-        minScale: string[];
-    }
-
-    interface NoteName {
-        [key:string]: NoteData;
-    }
-
-    const noteLib: NoteName = {
-        'C': { 
-            'majScale': ['C','D','E','F','G','A','B'],
-            'minScale': ['C','D','Eb','F','G','Ab','Bb'] },
-        'C# / Db': { 
-            'majScale': ['Db','Eb','F','Gb','Ab','Bb','C'],
-            'minScale': ['Db','Eb','E','Gb','Ab','A','B'] },
-        'D': { 
-            'majScale': ['D','E','F#','G','A','B','C#'],
-            'minScale': ['D','E','F','G','A','Bb','C'] },
-        'D# / Eb': { 
-            'majScale': ['Eb','F','G','Ab','Bb','C','D'],
-            'minScale': ['Eb','E','Gb','Ab','Bb','B','Db'] },
-        'E': { 
-            'majScale': ['E','F#','G#','A','B','C#','D#'],
-            'minScale': ['E','F#','G','A','B','C','D'] },
-        'F': { 
-            'majScale': ['F','G','A','Bb','C','D','E'],
-            'minScale': ['F','G','Ab','Bb','C','Db','Eb'] },
-        'F# / Gb': { 
-            'majScale': ['Gb','Ab','Bb','B','Db','Eb','F'],
-            'minScale': ['Gb','Ab','A','B','Db','D','E'] },
-        'G': { 
-            'majScale': ['G','A','B','C','D','E','F#'],
-            'minScale': ['G','A','Bb','C','D','Eb','F'] },
-        'G# / Ab': { 
-            'majScale': ['Ab','Bb','C','Db','Eb','F','G'],
-            'minScale': ['Ab','Bb','B','Db','Eb','E','Gb'] },
-        'A': { 
-            'majScale': ['A','B','C#','D','E','F#','G#'],
-            'minScale': ['A','B','C','D','E','F','G'] },
-        'A# / Bb': { 
-            'majScale': ['Bb','C','D','Eb','F','G','A'],
-            'minScale': ['Bb','C','Db','Eb','F','Gb','Ab'] },
-        'B': { 
-            'majScale': ['B','C#','D#','E','F#','G#','A#'],
-            'minScale': ['B','C#','D','E','F#','G','A'] },
-    }
-    
+     
     return (
         <div className='content'>
             <ToggleButton toggle={toggle} onClick={() => handleToggle(toggle)}/>
             <h1 className='note'>{note}</h1>
-                <h2 className='scale'> 
+                <div className='scale'>
+                    <h3>{toggle == false ? 'Major' : 'Minor'} Scale</h3> 
                     {
                     toggle == false ?
                         noteLib[note].majScale.map((n) => { return (
@@ -124,10 +76,72 @@ function Content ({ note, toggle, handleToggle }: Content) {
                             <p className='scaleNote' key={n}>{n}</p>
                         )})
                     } 
-                </h2>
+                </div>
+            <TriadContainer type={'Major'} note={note} />
+            <TriadContainer type={'Minor'} note={note} />
+            <TriadContainer type={'Diminished'} note={note} />
+            <TriadContainer type={'Augmented'} note={note} />
         </div>
     )
 }
+
+interface triadContainer {
+    type: string,
+    note: string
+}
+
+function TriadContainer({ type, note }: triadContainer) {
+
+    if(type == "Major") {
+        return (
+            <div className='majorTriad'>
+                <h2 className='triadType'>{type} Triad</h2>
+                    <div className='triad'>
+                        {noteLib[note].majTriad.map((n) => { return (
+                            <p className='triadNote' key={n}>{n}</p>
+                        )})}
+                </div>
+            </div>
+        )
+    } else if(type == "Minor") {
+        return (
+            <div className='minorTriad'>
+                <h1 className='triadType'>{type} Triad</h1>
+                    <div className='triad'>
+                        {noteLib[note].minTriad.map((n) => { return (
+                            <p className='triadNote' key={n}>{n}</p>
+                        )})}
+                </div>
+            </div>
+        )
+    } else if(type == "Diminished") {
+        return (
+            <div className='diminishedTriad'>
+                <h1 className='triadType'>{type} Triad</h1>
+                    <div className='triad'>
+                        {noteLib[note].dimTriad.map((n) => { return (
+                            <p className='triadNote' key={n}>{n}</p>
+                        )})}
+                    </div>
+            </div>
+        )
+    } else if(type == "Augmented") {
+        return (
+            <div className='augmentedTriad'>
+                <h1 className='triadType'>{type} Triad</h1>
+                    <div className='triad'>
+                        {noteLib[note].augTriad.map((n) => { return (
+                            <p className='triadNote' key={n}>{n}</p>
+                        )})}
+                    </div>
+            </div>
+        )
+    } else {
+        return(null);
+    }
+
+}
+
 
 interface toggleButton {
     toggle: boolean;
@@ -138,7 +152,6 @@ function ToggleButton({ toggle, onClick }: toggleButton) {
 
     return ( 
         <div className='toggleContainer'>
-            <h3>{toggle == false ? 'Major' : 'Minor'}</h3>
             <div className='toggleSwitch'>
                 <div className={toggle == false ? 'toggleOn' : 'toggleOff'} onClick={onClick}></div>
             </div>
